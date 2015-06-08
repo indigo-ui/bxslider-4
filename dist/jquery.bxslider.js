@@ -1596,6 +1596,10 @@
       $(el).data('bxSlider', this);
     };
 
+    el.getNumberOfPages = function() {
+      return getPagerQty();
+    };
+
     /**
      * Update slider settings like speed on the fly
      */
