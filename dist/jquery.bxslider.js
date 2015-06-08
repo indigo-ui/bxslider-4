@@ -1585,6 +1585,10 @@
       slider.settings = $.extend(slider.settings, options);
     };
 
+    el.getNumberOfPages = function() {
+      return getPagerQty();
+    };
+
     init();
 
     $(el).data('bxSlider', this);
