@@ -1399,7 +1399,7 @@
          * (e.g. if you destroy the slider on a next click),
          * it doesn't throw an error.
          */
-        if (typeof (position) !== undefined) {
+        if (typeof (position) !== 'undefined') {
           value = slider.settings.mode === 'horizontal' ? -(position.left - moveBy) : -position.top;
           // plugin values to be animated
           setPositionProperty(value, 'slide', slider.settings.speed);
@@ -1568,17 +1568,6 @@
       init();
       //store reference to self in order to access public functions later
       $(el).data('bxSlider', this);
-    };
-
-    /**
-     * Update slider settings like speed on the fly
-     */
-    el.updateSettings = function(options) {
-      slider.settings = $.extend(slider.settings, options);
-    };
-
-    el.getNumberOfPages = function() {
-      return getPagerQty();
     };
 
     init();
