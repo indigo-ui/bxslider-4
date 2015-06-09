@@ -1578,6 +1578,17 @@
       $(el).data('bxSlider', this);
     };
 
+    /**
+     * Update slider settings like speed on the fly
+     */
+    el.updateSettings = function(options) {
+      slider.settings = $.extend(slider.settings, options);
+    };
+
+    el.getNumberOfPages = function() {
+      return getPagerQty();
+    };
+
     init();
 
     $(el).data('bxSlider', this);
