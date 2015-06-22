@@ -1581,6 +1581,21 @@
       return getPagerQty();
     };
 
+    el.getNumberSlidesShowing = function() {
+      return getNumberSlidesShowing();
+    };
+
+    el.getVisibleSlideElements = function () {
+      var slideElements = slider.children;
+      var pageSize = getNumberSlidesShowing();
+      var pages = [];
+      for (var i = 0, il = slideElements.length; i < il; i += pageSize) {
+        pages.push(slideElements.slice(i, i + pageSize));
+      }
+      var curPage = slider.active.index;
+      return pages[curPage];
+    };
+
     init();
 
     $(el).data('bxSlider', this);
