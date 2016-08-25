@@ -569,7 +569,7 @@
             //make sure it's the correct one
             if (!$(e.target).is(el)) { return; }
             // unbind the callback
-            el.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
+            el.off('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
             updateAfterSlideTransition();
           });
         } else if (type === 'reset') {
@@ -583,7 +583,7 @@
             //make sure it's the correct one
             if (!$(e.target).is(el)) { return; }
             // unbind the callback
-            el.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
+            el.off('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
             // reset the position
             setPositionProperty(params.resetValue, 'reset', 0);
             // start the loop again
