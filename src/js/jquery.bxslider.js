@@ -1,3 +1,11 @@
+/**
+ * bxSlider v4.2.4
+ * Copyright 2013-2016 Steven Wanderski
+ * Written while drinking Belgian ales and listening to jazz
+
+ * Licensed under MIT (http://opensource.org/licenses/MIT)
+ */
+
 ;(function($) {
 
   var defaults = {
@@ -282,9 +290,7 @@
         $(this).one('load error', function() {
           if (++count === total) { callback(); }
         }).each(function() {
-          if (this.complete) { 
-            $(this).trigger('load');
-          }
+          if (this.complete) { $(this).trigger('load'); }
         });
       });
     };
@@ -319,7 +325,7 @@
       // slider has been fully initialized
       slider.initialized = true;
       // bind the resize call to the window
-      if (slider.settings.responsive) { $(window).bind('resize', resizeWindow); }
+      if (slider.settings.responsive) { $(window).on('resize', resizeWindow); }
       // if auto is true and has more than 1 page, start the show
       if (slider.settings.auto && slider.settings.autoStart && (getPagerQty() > 1 || slider.settings.autoSlideForOnePage)) { initAuto(); }
       // if ticker is true, start the ticker
@@ -559,11 +565,11 @@
           // set the property value
           el.css(slider.animProp, propValue);
           // bind a callback method - executes when CSS transition completes
-          el.bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(e) {
+          el.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(e) {
             //make sure it's the correct one
             if (!$(e.target).is(el)) { return; }
             // unbind the callback
-            el.unbind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
+            el.off('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
             updateAfterSlideTransition();
           });
         } else if (type === 'reset') {
@@ -573,11 +579,11 @@
           el.css('-' + slider.cssPrefix + '-transition-timing-function', 'linear');
           el.css(slider.animProp, propValue);
           // bind a callback method - executes when CSS transition completes
-          el.bind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(e) {
+          el.on('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd', function(e) {
             //make sure it's the correct one
             if (!$(e.target).is(el)) { return; }
             // unbind the callback
-            el.unbind('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
+            el.off('transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd');
             // reset the position
             setPositionProperty(params.resetValue, 'reset', 0);
             // start the loop again
@@ -660,8 +666,8 @@
       slider.controls.next = $('<a class="bx-next" href="">' + slider.settings.nextText + '</a>');
       slider.controls.prev = $('<a class="bx-prev" href="">' + slider.settings.prevText + '</a>');
       // bind click actions to the controls
-      slider.controls.next.bind('click touchend', clickNextBind);
-      slider.controls.prev.bind('click touchend', clickPrevBind);
+      slider.controls.next.on('click touchend', clickNextBind);
+      slider.controls.prev.on('click touchend', clickPrevBind);
       // if nextSelector was supplied, populate it
       if (slider.settings.nextSelector) {
         $(slider.settings.nextSelector).append(slider.controls.next);
@@ -1065,7 +1071,7 @@
         start: {x: 0, y: 0},
         end: {x: 0, y: 0}
       };
-      slider.viewport.bind('touchstart MSPointerDown pointerdown', onTouchStart);
+      slider.viewport.on('touchstart MSPointerDown pointerdown', onTouchStart);
 
       //for browsers that have implemented pointer events and fire a click after
       //every pointerup regardless of whether pointerup is on same screen location as pointerdown or not
@@ -1104,10 +1110,10 @@
           slider.viewport.get(0).setPointerCapture(slider.pointerId);
         }
         // bind a "touchmove" event to the viewport
-        slider.viewport.bind('touchmove MSPointerMove pointermove', onTouchMove);
+        slider.viewport.on('touchmove MSPointerMove pointermove', onTouchMove);
         // bind a "touchend" event to the viewport
-        slider.viewport.bind('touchend MSPointerUp pointerup', onTouchEnd);
-        slider.viewport.bind('MSPointerCancel pointercancel', onPointerCancel);
+        slider.viewport.on('touchend MSPointerUp pointerup', onTouchEnd);
+        slider.viewport.on('MSPointerCancel pointercancel', onPointerCancel);
       }
     };
 
@@ -1124,9 +1130,9 @@
 
       //remove handlers
       slider.controls.el.removeClass('disabled');
-      slider.viewport.unbind('MSPointerCancel pointercancel', onPointerCancel);
-      slider.viewport.unbind('touchmove MSPointerMove pointermove', onTouchMove);
-      slider.viewport.unbind('touchend MSPointerUp pointerup', onTouchEnd);
+      slider.viewport.off('MSPointerCancel pointercancel', onPointerCancel);
+      slider.viewport.off('touchmove MSPointerMove pointermove', onTouchMove);
+      slider.viewport.off('touchend MSPointerUp pointerup', onTouchEnd);
       if (slider.viewport.get(0).releasePointerCapture) {
         slider.viewport.get(0).releasePointerCapture(slider.pointerId);
       }
@@ -1175,7 +1181,7 @@
      *  - DOM event object
      */
     var onTouchEnd = function(e) {
-      slider.viewport.unbind('touchmove MSPointerMove pointermove', onTouchMove);
+      slider.viewport.off('touchmove MSPointerMove pointermove', onTouchMove);
       //enable slider controls as soon as user stops interacing with slides
       slider.controls.el.removeClass('disabled');
       var orig    = e.originalEvent,
@@ -1224,7 +1230,7 @@
           }
         }
       }
-      slider.viewport.unbind('touchend MSPointerUp pointerup', onTouchEnd);
+      slider.viewport.off('touchend MSPointerUp pointerup', onTouchEnd);
       if (slider.viewport.get(0).releasePointerCapture) {
         slider.viewport.get(0).releasePointerCapture(slider.pointerId);
       }
@@ -1401,7 +1407,7 @@
          * (e.g. if you destroy the slider on a next click),
          * it doesn't throw an error.
          */
-        if (typeof (position) !== 'undefined') {
+        if (typeof (position) !== undefined) {
           value = slider.settings.mode === 'horizontal' ? -(position.left - moveBy) : -position.top;
           // plugin values to be animated
           setPositionProperty(value, 'slide', slider.settings.speed);
@@ -1555,8 +1561,8 @@
       $('.bx-caption', this).remove();
       if (slider.controls.autoEl) { slider.controls.autoEl.remove(); }
       clearInterval(slider.interval);
-      if (slider.settings.responsive) { $(window).unbind('resize', resizeWindow); }
-      if (slider.settings.keyboardEnabled) { $(document).unbind('keydown', keyPress); }
+      if (slider.settings.responsive) { $(window).off('resize', resizeWindow); }
+      if (slider.settings.keyboardEnabled) { $(document).off('keydown', keyPress); }
       //remove self reference in data
       $(this).removeData('bxSlider');
     };
@@ -1570,32 +1576,6 @@
       init();
       //store reference to self in order to access public functions later
       $(el).data('bxSlider', this);
-    };
-
-    /**
-     * Update slider settings like speed on the fly
-     */
-    el.updateSettings = function(options) {
-      slider.settings = $.extend(slider.settings, options);
-    };
-
-    el.getNumberOfPages = function() {
-      return getPagerQty();
-    };
-
-    el.getNumberSlidesShowing = function() {
-      return getNumberSlidesShowing();
-    };
-
-    el.getVisibleSlideElements = function () {
-      var slideElements = slider.children;
-      var pageSize = getNumberSlidesShowing();
-      var pages = [];
-      for (var i = 0, il = slideElements.length; i < il; i += pageSize) {
-        pages.push(slideElements.slice(i, i + pageSize));
-      }
-      var curPage = slider.active.index;
-      return pages[curPage];
     };
 
     init();
