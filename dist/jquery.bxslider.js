@@ -1,6 +1,6 @@
 /**
  * bxSlider v4.2.4
- * Copyright 2013-2016 Steven Wanderski
+ * Copyright 2013-2017 Steven Wanderski
  * Written while drinking Belgian ales and listening to jazz
 
  * Licensed under MIT (http://opensource.org/licenses/MIT)
@@ -1109,6 +1109,14 @@
         slider.touch.originalPos = el.position();
         var orig = e.originalEvent,
         touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
+
+          // fix for https://github.com/stevenwanderski/bxslider-4/issues/1086
+          var chromePointerEvents = typeof PointerEvent === 'function';
+          if (chromePointerEvents && orig.pointerId === undefined) {
+              return;
+          }
+          // end fix
+
         // record the starting touch x, y coordinates
         slider.touch.start.x = touchPoints[0].pageX;
         slider.touch.start.y = touchPoints[0].pageY;
