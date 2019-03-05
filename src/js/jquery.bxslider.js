@@ -1071,7 +1071,7 @@
         start: {x: 0, y: 0},
         end: {x: 0, y: 0}
       };
-      slider.viewport.on('touchstart MSPointerDown pointerdown', onTouchStart);
+      slider.viewport.on('touchstart MSPointerDown', onTouchStart);
 
       //for browsers that have implemented pointer events and fire a click after
       //every pointerup regardless of whether pointerup is on same screen location as pointerdown or not
@@ -1103,25 +1103,26 @@
         touchPoints = (typeof orig.changedTouches !== 'undefined') ? orig.changedTouches : [orig];
 
           // fix for https://github.com/stevenwanderski/bxslider-4/issues/1086
-          var chromePointerEvents = typeof PointerEvent === 'function';
-          if (chromePointerEvents && orig.pointerId === undefined) {
-              return;
-          }
+          // var chromePointerEvents = typeof PointerEvent === 'function';
+          // if (chromePointerEvents && orig.pointerId === undefined) {
+          //     return;
+          // }
           // end fix
 
         // record the starting touch x, y coordinates
         slider.touch.start.x = touchPoints[0].pageX;
         slider.touch.start.y = touchPoints[0].pageY;
 
-        if (slider.viewport.get(0).setPointerCapture) {
-          slider.pointerId = orig.pointerId;
-          slider.viewport.get(0).setPointerCapture(slider.pointerId);
-        }
+        // if (slider.viewport.get(0).setPointerCapture) {
+        //   slider.pointerId = orig.pointerId;
+        //   slider.viewport.get(0).setPointerCapture(slider.pointerId);
+        // }
+        
         // bind a "touchmove" event to the viewport
-        slider.viewport.on('touchmove MSPointerMove pointermove', onTouchMove);
+        slider.viewport.on('touchmove MSPointerMove', onTouchMove);
         // bind a "touchend" event to the viewport
-        slider.viewport.on('touchend MSPointerUp pointerup', onTouchEnd);
-        slider.viewport.on('MSPointerCancel pointercancel', onPointerCancel);
+        slider.viewport.on('touchend MSPointerUp', onTouchEnd);
+        slider.viewport.on('MSPointerCancel', onPointerCancel);
       }
     };
 
@@ -1138,9 +1139,9 @@
 
       //remove handlers
       slider.controls.el.removeClass('disabled');
-      slider.viewport.off('MSPointerCancel pointercancel', onPointerCancel);
-      slider.viewport.off('touchmove MSPointerMove pointermove', onTouchMove);
-      slider.viewport.off('touchend MSPointerUp pointerup', onTouchEnd);
+      slider.viewport.off('MSPointerCancel', onPointerCancel);
+      slider.viewport.off('touchmove MSPointerMove', onTouchMove);
+      slider.viewport.off('touchend MSPointerUp', onTouchEnd);
       if (slider.viewport.get(0).releasePointerCapture) {
         slider.viewport.get(0).releasePointerCapture(slider.pointerId);
       }
@@ -1189,7 +1190,7 @@
      *  - DOM event object
      */
     var onTouchEnd = function(e) {
-      slider.viewport.off('touchmove MSPointerMove pointermove', onTouchMove);
+      slider.viewport.off('touchmove MSPointerMove', onTouchMove);
       //enable slider controls as soon as user stops interacing with slides
       slider.controls.el.removeClass('disabled');
       var orig    = e.originalEvent,
@@ -1238,7 +1239,7 @@
           }
         }
       }
-      slider.viewport.off('touchend MSPointerUp pointerup', onTouchEnd);
+      slider.viewport.off('touchend MSPointerUp', onTouchEnd);
       if (slider.viewport.get(0).releasePointerCapture) {
         slider.viewport.get(0).releasePointerCapture(slider.pointerId);
       }
