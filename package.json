@@ -37,9 +37,6 @@
     "pretty": "^0.1.2",
     "handlebars-helpers": "~0.5.8"
   },
-  "engines": {
-    "node": "~0.10.28"
-  },
   "keywords": [
     "responsive",
     "carousel",
